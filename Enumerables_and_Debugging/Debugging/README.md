@@ -450,3 +450,161 @@ def prime?(num)
 - We can quit byebug by typing `exit`, then `y` to confirm.
 - We can type `c` (for `continue`) to tell the debugger to keep running the code.
 - Add a breakpointwith the `break` command. This tells `byebug` to make sure to stop when we hit line 8. I then tell the program to run freely until it hits a breakpoint (`c`, or `continue`)
+
+## **Reading stack traces**
+
+Now that `prime?` appears to be working, it's time to test `primes`. I've put a call to `debugger` at the start of `primes`. Again, let's use pry:
+
+```
+[10] pry(main)> load 'primes.rb'
+=> true
+[11] pry(main)> primes(2)
+
+[11, 20] in primes.rb
+   11: end
+   12:
+   13: def primes(num_primes)
+   14:   debugger
+   15:
+=> 16:   ps = []
+   17:   num = 1
+   18:   while ps.count < num_primes
+   19:     primes << num if prime?(num)
+   20:   end
+(byebug) c
+ArgumentError: wrong number of arguments (0 for 1)
+from primes.rb:13:in 'primes'
+```
+
+The method failed. When an exception is thrown and no code catches and handles the exception, then the program stops (crashes) and the exception and line where it occurred are printed.
+
+The line `ArgumentError: wrong number of arguments (0 for 1)` states the exception type (`ArgumentError`) and the message. This message says that we're passing the wrong number of arguments to a method: zero arguments instead of one argument.
+
+Where did this happen in the code? The subsequent line tells us: `from primes.rb:13:in 'primes'`. If we want more detail about just how we came to this line of code, we can type `wtf` to look at the *stack trace*. (You can also add question marks and exclamation points to get longer stack traces, like `wtf?`, `wtf?!!`, etc.)
+
+```
+[9] pry(main)> wtf
+Exception: ArgumentError: wrong number of arguments (0 for 1)
+--
+0: /home/david/Dropbox/app-academy-TA/primes.rb:13:in 'primes'
+1: /home/david/Dropbox/app-academy-TA/primes.rb:19:in 'primes'
+2: (pry):21:in '__pry__'
+3: /home/david/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/pry-0.10.1/lib/pry/pry_instance.rb:355:in 'eval'
+4: /home/david/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/pry-0.10.1/lib/pry/pry_instance.rb:355:in 'evaluate_ruby'
+[10] pry(main)>
+```
+
+The top line of the stack trace tells us what method (`primes`) and line of code (13) were executing when the error occurred. The next line tells us what called `primes`; it looks like `primes` calls itself, on line 19. The next line starts with '(pry)'; this is pry executing the code we gave it.
+
+It's certainly odd that primes is calling itself. Let's check this out:
+
+```
+[12] pry(main)> primes(2)
+
+[11, 20] in primes.rb
+   11: end
+   12:
+   13: def primes(num_primes)
+   14:   debugger
+   15:
+=> 16:   ps = []
+   17:   num = 1
+   18:   while ps.count < num_primes
+   19:     primes << num if prime?(num)
+   20:   end
+(byebug)
+```
+
+Ah. Line 19 says that if `prime?(num)`, then `primes << num`. This tries to call `primes` again, but what we really wanted was to push `num` into our list, named `ps`. This is confusing because it's not super clear that `primes` is calling a method (equivalent to `self.primes`).
+
+Fix this and restart `pry`.
+
+```
+[13] pry(main)> load 'primes.rb'
+=> true
+[14] pry(main)> primes(2)
+
+[11, 20] in primes.rb
+   11: end
+   12:
+   13: def primes(num_primes)
+   14:   debugger
+   15:
+=> 16:   ps = []
+   17:   num = 1
+   18:   while ps.count < num_primes
+   19:     ps << num if prime?(num)
+   20:   end
+(byebug) c
+=> nil
+```
+
+Oops. A few more simple bugs. You catch them.
+
+## **Step vs Next**
+
+Here, using `n`, I have line by-line advanced through `primes`:
+
+```
+[14, 23] in primes.rb
+   14:   debugger
+   15:
+   16:   ps = []
+   17:   num = 1
+   18:   while ps.count < num_primes
+=> 19:     ps << num if prime?(num)
+   20:   end
+   21: end
+   22:
+   23: if __FILE__ == $PROGRAM_NAME
+(byebug)
+```
+
+I could type `n` to execute this line and advance (back to line 19, actually). But what if I wanted to "step into" the call to `prime?`? To do this, I use `s` or `step`:
+
+```
+(byebug) step
+
+[1, 10] in primes.rb
+    1: require 'byebug'
+    2:
+    3: def prime?(num)
+=>  4:   (2...num).each do |idx|
+    5:     if num % idx == 0
+    6:       return false
+    7:     end
+    8:   end
+    9:
+   10:   true
+(byebug)
+```
+
+This is handy when you want to go down into methods. If I'm no longer interested in stepping through all of `prime?`, I can finish it and move up a level by using `finish`:
+
+```
+(byebug) finish
+
+[14, 23] in primes.rb
+   14:   debugger
+   15:
+   16:   ps = []
+   17:   num = 1
+   18:   while ps.count < num_primes
+=> 19:     ps << num if prime?(num)
+   20:   end
+   21: end
+   22:
+   23: if __FILE__ == $PROGRAM_NAME
+(byebug)
+```
+
+## **Debugging and Testing**
+
+We've gone through a lot of work testing that these methods work as they should. It would be good if we could record these tests so that they can be run in the future, to make sure new bugs do not sneak in as we continue to develop the software. We'll talk later about RSpec, a way to write tests that can be automatically run by a system called Guard.
+
+When a bug is discovered, it is good practice to write a new test that verifies we don't make that mistake again.
+
+## **Resources**
+
+- [why Pry is awesome](http://www.sitepoint.com/rubyists-time-pry-irb/)
+- [Byebug documentation](https://github.com/deivid-rodriguez/byebug/blob/master/README.md)

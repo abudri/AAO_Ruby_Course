@@ -444,7 +444,7 @@ def prime?(num)
 ```
 
 - The debugger prompt looks like `(byebug)`. Our position is indicated by the arrow; we're at line 6.
-- `step` (or `s`) is the command that we use to step into a method call
+- `step` (or `s`) is the command that we use to step into a method call. This is handy when you want to go down into methods. If I'm no longer interested in stepping through all of prime?, I can finish it and move up a level by using `finish`.
 - Since there is no method call on line 7, we advance with `next` (or `n`).
 - Check for values by typing them in the `(byebug)` prompt, such as typing `num` or `idx` in the prompt.
 - We can quit byebug by typing `exit`, then `y` to confirm.

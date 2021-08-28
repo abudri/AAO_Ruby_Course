@@ -1,11 +1,10 @@
-# App Academy Open - Ruby Course
-
-App Academy Open [Ruby Course](https://open.appacademy.io/learn/full-stack-online/ruby/setting-up-a-development-environment--phase-1-) notes.
+# App Academy Open - Software Engineering Foundations Course
+App Academy Open [Software Engineering Foundations Course](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/ruby-environment-setup) notes.
 
 
 ## Glossary
 
-**Stack** - Here at App Academy we work with a Ruby on Rails, JavaScript, React, Redux, and PostgresSQL stack. A [stack](https://en.wikipedia.org/wiki/Solution_stack) is simply a collection of software and hardware used in development of an application. For our specific purposes we are using Ruby on Rails on the backend/server, PostgresSQL to house our database, and JavaScript + React + Redux for frontend rendering and logic. For backend development in particular, we will need a database application, a server, and a web-application framework. For the purposes of this course, we will be using two database applications: PostgreSQL and SQLite.
+**Stack** - Here at App Academy we work with a Ruby on Rails, JavaScript, React, Redux, and PostgresSQL stack. A [stack](https://en.wikipedia.org/wiki/Solution_stack) is simply a collection of software and hardware used in development of an application. For our specific purposes we are using Ruby on Rails on the backend/server, PostgresSQL to house our database, and JavaScript + React + Redux for frontend rendering and logic. For backend development in particular, we will need a database application, a server, and a web-application framework. For the purposes of this course, we will be using two database applications: PostgreSQL and SQLite. [Reference](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/ruby-environment-setup)
 
 
 ## Tools

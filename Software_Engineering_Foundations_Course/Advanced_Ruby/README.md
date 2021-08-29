@@ -220,3 +220,44 @@ p my_bootcamp[:color]   #=> "red
 ```
 
 This shortcut is **only allowed when initializing the symbols in the hash**. When getting a value from the hash after initialization, we must always put the colon on the left like normal. `hash[:key]` is the correct syntax. Writing `hash[key:]` is invalid.
+
+
+### [Symbols Lecture (Video)](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/symbols-lecture)
+
+A lot of string methods like index `.[]` or `.length` are also available for symbols:
+
+```
+irb(main):012:0> :hello[1]
+=> "e"
+irb(main):013:0> :hello.length
+=> 5
+```
+
+Strings are also **mutable**, but **symbols are immutable**, for a simple example see how we can change the string below, but we can not change a symbol:
+
+```
+irb(main):014:0> str = "hello"
+=> "hello"
+irb(main):015:0> str[1] = "x"
+=> "x"
+irb(main):016:0> str
+=> "hxllo"
+irb(main):017:0> sym = :hello
+=> :hello
+irb(main):018:0> sym[1] = "x"
+Traceback (most recent call last):
+	19: from /Users/z/.rbenv/versions/2.6.3/bin/irb:23:in `<main>'
+	18: from /Users/z/.rbenv/versions/2.6.3/bin/irb:23:in `load'
+	17: from /Users/z/.rbenv/versions/2.6.3/lib/ruby/gems/2.6.0/gems/irb-1.3.5/exe/irb:11:in `<top (required)>'
+(irb):18:in `<main>': undefined method `[]=' for :hello:Symbol (NoMethodError)
+irb(main):019:0> sym[1] = x
+Traceback (most recent call last):
+	19: from /Users/z/.rbenv/versions/2.6.3/bin/irb:23:in `<main>'
+	18: from /Users/z/.rbenv/versions/2.6.3/bin/irb:23:in `load'
+	17: from /Users/z/.rbenv/versions/2.6.3/lib/ruby/gems/2.6.0/gems/irb-1.3.5/exe/irb:11:in `<top (required)>'
+(irb):19:in `<main>': undefined local variable or method `x' for main:Object (NameError)
+```
+
+Also, the same string value like `"hello"` can and is stored many times in memory, since it can change and mutate, but a symbol will always only have one memory address.  Can't change them so easy to store that info in your computer.
+
+Symbols are about under the hood things, but to put it shortly, most important thing is symbols are overall going to be more efficient than strings in our computer and are good for quick lookup, and a hash is exactly that scenario.

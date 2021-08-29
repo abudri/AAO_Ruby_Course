@@ -261,3 +261,45 @@ Traceback (most recent call last):
 Also, the same string value like `"hello"` can and is stored many times in memory, since it can change and mutate, but a symbol will always only have one memory address.  Can't change them so easy to store that info in your computer.
 
 Symbols are about under the hood things, but to put it shortly, most important thing is symbols are overall going to be more efficient than strings in our computer and are good for quick lookup, and a hash is exactly that scenario.
+
+### [Option Hashes](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/default-arguments-and-option-hashes-notes)
+
+If you have a method that accepts a hash as an argument, you can omit the braces when passing in the hash:
+
+```
+def method(hash)
+    p hash  # {"location"=>"SF", "color"=>"red", "size"=>100}
+end
+
+method({"location"=>"SF", "color"=>"red", "size"=>100})
+
+# this also works:
+method("location"=>"SF", "color"=>"red", "size"=>100)
+```
+
+This can really clean things up when you have other arguments before the hash:
+
+```
+def modify_string(str, options)
+    str.upcase! if options["upper"]
+    p str * options["repeats"]
+end
+
+# less readable
+modify_string("bye", {"upper"=>true, "repeats"=>3}) # => "BYEBYEBYE"
+
+# more readable
+modify_string("bye", "upper"=>true, "repeats"=>3)   # => "BYEBYEBYE"
+```
+
+Combining this with the default arguments we covered in the previous section can make our code even more flexible:
+
+```
+def modify_string(str, options={"upper"=>false, "repeats"=>1})
+    str.upcase! if options["upper"]
+    p str * options["repeats"]
+end
+
+modify_string("bye")   # => "bye"
+modify_string("bye", "upper"=>true, "repeats"=>3)   # => "BYEBYEBYE"
+```

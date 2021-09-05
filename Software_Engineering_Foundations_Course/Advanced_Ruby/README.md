@@ -303,3 +303,63 @@ end
 modify_string("bye")   # => "bye"
 modify_string("bye", "upper"=>true, "repeats"=>3)   # => "BYEBYEBYE"
 ```
+
+[Default Arguments](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/default-args-and-option-hashes-lecture)
+
+```ruby
+def repeat(str, n)
+  p str * n
+end
+
+repeat("hi", 3)  # "hihihi"
+repeat("hi") # Error: should error for missing 2nd argument
+```
+
+we can change the above to give default behavior of printing out `"hi"` just once,
+
+```ruby
+def repeat(str, n=1)
+  p str * n
+end
+
+repeat("hi", 3)  # "hihihi"
+repeat("hi") # "hi"
+```
+
+You can do the same with hashes, say you want a method that prints out a hash
+
+```ruby
+def print_h(hsh)
+  p hsh
+end
+
+print_h( { "city"=>"ny", "color"=>"red" } )
+```
+
+When you pass in a hash as an argument to a method, you can actually remove the curly braces `{ .. }`, since Ruby sees the first argument is a key-value pair, it interprets and treats the rest of the input as a hash, so you can do:
+
+```ruby
+print_h( "city"=>"ny", "color"=>"red" )
+```
+
+You can take this further and have a non-hash argument before the hash argument like a string of `name`, 
+
+```ruby
+def print_h(name, hsh)
+  p name
+  p hsh
+end
+```
+
+You can do,
+
+```ruby
+print_h( { "Abdullah", "city"=>"ny", "color"=>"red" } )
+```
+Ruby will see the first argument is not a key-value pair, so it is interpreted as a string and not interpreted as part of the hash, and the next argument is a key-value pair, so that and all following arguments will be included as data inside your hash.
+
+This is just a cleaner way of doing things.
+
+
+
+

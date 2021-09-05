@@ -303,7 +303,7 @@ modify_string("bye")   # => "bye"
 modify_string("bye", "upper"=>true, "repeats"=>3)   # => "BYEBYEBYE"
 ```
 
-[Default Arguments](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/default-args-and-option-hashes-lecture)
+### [Default Arguments](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/default-args-and-option-hashes-lecture)
 
 ```ruby
 def repeat(str, n)
@@ -359,6 +359,80 @@ Ruby will see the first argument is not a key-value pair, so it is interpreted a
 
 This is just a cleaner way of doing things.
 
+### Splat Operator
+
+There are few different ways to use the splat (*) operator in Ruby. Let's explore each of them so we can add them to our programming tool belt.
+
+If we want our method to have the ability to accept at least two arguments with potentially more, we can add a splat parameter. The additional arguments will be gathered into an array for us to use as we see fit:
+
+```ruby
+def method(arg_1, arg_2, *other_args)
+    p arg_1         # "a"
+    p arg_2         # "b"
+    p other_args    # ["c", "d", "e"]
+end
+
+method("a", "b", "c", "d", "e") 
+```
+
+If we pass in exactly two arguments, then other_args will be an empty array:
+
+```ruby
+def method(arg_1, arg_2, *other_args)
+    p arg_1         # "a"
+    p arg_2         # "b"
+    p other_args    # []
+end
+
+method("a", "b")
+```
+
+Notice that in any scenario, the arguments are passed in positionally. This means that in the example above, arg_1 is assigned "a", arg_2 is assigned "b", and there is no additional data being passed, so other_args is empty.
+
+As a best practice, we should use splat at the end of the parameter list to avoid confusion.
+
+#### **Using splat to decompose an array**
+
+We can also use splat to decompose or unpack elements of an array. Let's say we had an array containing some elements, but we wanted each individual element to become an argument:
+
+```ruby
+def greet(first_name, last_name)
+    p "Hey " + first_name + ", your last name is " + last_name
+end
+
+names = ["grace", "hopper"]
+greet(names)    # ArgumentError: wrong number of arguments (given 1, expected 2)
+```
+
+The code above does not work because we are passing in the full array as the `first_name`, making `last_name` a missing argument. Thankfully we can use a splat to unpack this array:
+
+```ruby
+def greet(first_name, last_name)
+    p "Hey " + first_name + ", your last name is " + last_name
+end
+
+names = ["Grace", "Hopper"]
+greet(*names)    # => "Hey Grace, your last name is Hopper"
+```ruby
+
+When using splat to unpack an array, you can imagine that the `*` will remove the brackets ([]) that enclose the array. This leaves us with a simple comma separated list, perfect for passing in arguments. If you imagine `*` as removing the brackets around an array, we can figure out some other creative ways to use this tool:
+
+```ruby
+arr_1 = ["a", "b"]
+arr_2 = ["d", "e"]
+arr_3 = [ *arr_1, "c", *arr_2 ]
+p arr_3 # => ["a", "b", "c", "d", "e"]
+```
+
+#### **Using splat to decompose a hash**
+
+We can use a double splat (**) to perform a similar unpacking of a hash's key-value pairs. Double splat will only work with hashes where the keys are symbols:
+
+```ruby
+old_hash = { a: 1, b: 2 }
+new_hash = { **old_hash, c: 3 }
+p new_hash # => {:a=>1, :b=>2, :c=>3}
+```
 
 
 

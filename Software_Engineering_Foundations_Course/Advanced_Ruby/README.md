@@ -359,7 +359,7 @@ Ruby will see the first argument is not a key-value pair, so it is interpreted a
 
 This is just a cleaner way of doing things.
 
-### Splat Operator
+### [Splat Operator](https://open.appacademy.io/learn/full-stack-online/software-engineering-foundations/splat-operator-notes)
 
 There are few different ways to use the splat (*) operator in Ruby. Let's explore each of them so we can add them to our programming tool belt.
 
